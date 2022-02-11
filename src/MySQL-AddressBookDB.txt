@@ -1,0 +1,293 @@
+ubuntu@datta-bhure ~ $ mysql -u root -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.28-0ubuntu0.21.10.3 (Ubuntu)
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| Employees          |
+| employeedb         |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sample             |
+| student            |
+| sys                |
++--------------------+
+8 rows in set (0.04 sec)
+
+mysql> create database Address_Book_Service_DB;
+Query OK, 1 row affected (0.22 sec)
+
+mysql> show databases;
++-------------------------+
+| Database                |
++-------------------------+
+| Address_Book_Service_DB |
+| Employees               |
+| employeedb              |
+| information_schema      |
+| mysql                   |
+| performance_schema      |
+| sample                  |
+| student                 |
+| sys                     |
++-------------------------+
+9 rows in set (0.01 sec)
+
+mysql> use Address_Book_Service_DB;
+Database changed
+mysql> create table addressbook(firstname varchar(50),lastname varchar(50),address varchar(50),city varchar(50),state varchar(50),zip varchar(50),phonenumber varchar(50),email varchar(50),primary key(firstname,lastname));
+Query OK, 0 rows affected (1.30 sec)
+
+mysql> desc addressbook;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| firstname   | varchar(50) | NO   | PRI | NULL    |       |
+| lastname    | varchar(50) | NO   | PRI | NULL    |       |
+| address     | varchar(50) | YES  |     | NULL    |       |
+| city        | varchar(50) | YES  |     | NULL    |       |
+| state       | varchar(50) | YES  |     | NULL    |       |
+| zip         | varchar(50) | YES  |     | NULL    |       |
+| phonenumber | varchar(50) | YES  |     | NULL    |       |
+| email       | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> insert into addressbook(firstname,lastname,address,city,state,zip,phonenumber,email) values('datta','bhure','wakad','pune','maharashtra','411033','9880164121','dattatribhure@gmail.com'),('ganesh','wadikar','whitefield','bangaluru','karnataka','560066','9876540123','wadikarganesh@gmail.com');
+Query OK, 2 rows affected (0.15 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from addressbook;
++-----------+----------+------------+-----------+-------------+--------+-------------+-------------------------+
+| firstname | lastname | address    | city      | state       | zip    | phonenumber | email                   |
++-----------+----------+------------+-----------+-------------+--------+-------------+-------------------------+
+| datta     | bhure    | wakad      | pune      | maharashtra | 411033 | 9880164121  | dattatribhure@gmail.com |
+| ganesh    | wadikar  | whitefield | bangaluru | karnataka   | 560066 | 9876540123  | wadikarganesh@gmail.com |
++-----------+----------+------------+-----------+-------------+--------+-------------+-------------------------+
+2 rows in set (0.00 sec)
+
+mysql> update addressbook set phonenumber='98801654121' where firstname='datta' and lastname='bhure';
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> insert into addressbook values('Ram','illale','Bandra','Mumbai','Maharashtra','411000','9770112345','ramillalen@gmail.com');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from addressbook;
++-----------+----------+------------+-----------+-------------+--------+-------------+-------------------------+
+| firstname | lastname | address    | city      | state       | zip    | phonenumber | email                   |
++-----------+----------+------------+-----------+-------------+--------+-------------+-------------------------+
+| datta     | bhure    | wakad      | pune      | maharashtra | 411033 | 98801654121 | dattatribhure@gmail.com |
+| ganesh    | wadikar  | whitefield | bangaluru | karnataka   | 560066 | 9876540123  | wadikarganesh@gmail.com |
+| Ram       | illale   | Bandra     | Mumbai    | Maharashtra | 411000 | 9770112345  | ramillalen@gmail.com    |
++-----------+----------+------------+-----------+-------------+--------+-------------+-------------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from addressbook where city='pune';
++-----------+----------+---------+------+-------------+--------+-------------+-------------------------+
+| firstname | lastname | address | city | state       | zip    | phonenumber | email                   |
++-----------+----------+---------+------+-------------+--------+-------------+-------------------------+
+| datta     | bhure    | wakad   | pune | maharashtra | 411033 | 98801654121 | dattatribhure@gmail.com |
++-----------+----------+---------+------+-------------+--------+-------------+-------------------------+
+1 row in set (0.00 sec)
+
+mysql> delete from addressbook where firstname='ganesh' and lastname='wadikar';
+Query OK, 1 row affected (0.17 sec)
+
+mysql> select * from addressbook where city='Mumbai' or state='karnataka';
++-----------+----------+---------+--------+-------------+--------+-------------+----------------------+
+| firstname | lastname | address | city   | state       | zip    | phonenumber | email                |
++-----------+----------+---------+--------+-------------+--------+-------------+----------------------+
+| Ram       | illale   | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | ramillalen@gmail.com |
++-----------+----------+---------+--------+-------------+--------+-------------+----------------------+
+1 row in set (0.00 sec)
+
+mysql> insert into addressbook values('ABC','def','Bandra','Mumbai','Maharashtra','411000','9770112345','abc@gmail.com');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from addressbook where city='Mumbai' or state='karnataka';
++-----------+----------+---------+--------+-------------+--------+-------------+----------------------+
+| firstname | lastname | address | city   | state       | zip    | phonenumber | email                |
++-----------+----------+---------+--------+-------------+--------+-------------+----------------------+
+| ABC       | def      | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | abc@gmail.com        |
+| Ram       | illale   | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | ramillalen@gmail.com |
++-----------+----------+---------+--------+-------------+--------+-------------+----------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from addressbook where city='Mumbai' or state='maharashtra';
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+
+| firstname | lastname | address | city   | state       | zip    | phonenumber | email                   |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+
+| ABC       | def      | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | abc@gmail.com           |
+| datta     | bhure    | wakad   | pune   | maharashtra | 411033 | 98801654121 | dattatribhure@gmail.com |
+| Ram       | illale   | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | ramillalen@gmail.com    |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from addressbook where mobilenumber='98801654121';
+ERROR 1054 (42S22): Unknown column 'mobilenumber' in 'where clause'
+mysql> select * from addressbook where city='pune';
++-----------+----------+---------+------+-------------+--------+-------------+-------------------------+
+| firstname | lastname | address | city | state       | zip    | phonenumber | email                   |
++-----------+----------+---------+------+-------------+--------+-------------+-------------------------+
+| datta     | bhure    | wakad   | pune | maharashtra | 411033 | 98801654121 | dattatribhure@gmail.com |
++-----------+----------+---------+------+-------------+--------+-------------+-------------------------+
+1 row in set (0.00 sec)
+
+mysql> select count(state) from addressbook;
++--------------+
+| count(state) |
++--------------+
+|            3 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select count(state) from addressbook where city='pune';
++--------------+
+| count(state) |
++--------------+
+|            1 |
++--------------+
+1 row in set (0.01 sec)
+
+mysql> select count(state) from addressbook where state='maharashtra';
++--------------+
+| count(state) |
++--------------+
+|            3 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select count(state) from addressbook where state='maharashtra' and city='mumbai';
++--------------+
+| count(state) |
++--------------+
+|            2 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select firstname from addressbook where city='pune' order by firstname;
++-----------+
+| firstname |
++-----------+
+| datta     |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select lastname from addressbook where city='mumbai' order by lastname;
++----------+
+| lastname |
++----------+
+| def      |
+| illale   |
++----------+
+2 rows in set (0.00 sec)
+
+mysql> alter table addressbook add column restype varchar(100);
+Query OK, 0 rows affected (0.85 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table addressbook add column emptype varchar(100), add column mstatus varchar(50);
+Query OK, 0 rows affected (0.64 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from addressbook;
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+---------+---------+
+| firstname | lastname | address | city   | state       | zip    | phonenumber | email                   | restype | emptype | mstatus |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+---------+---------+
+| ABC       | def      | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | abc@gmail.com           | NULL    | NULL    | NULL    |
+| datta     | bhure    | wakad   | pune   | maharashtra | 411033 | 98801654121 | dattatribhure@gmail.com | NULL    | NULL    | NULL    |
+| Ram       | illale   | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | ramillalen@gmail.com    | NULL    | NULL    | NULL    |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+---------+---------+
+3 rows in set (0.00 sec)
+
+mysql> alter table addressbook drop mstatus;
+^[[AQuery OK, 0 rows affected (2.15 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from addressbook;
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+---------+
+| firstname | lastname | address | city   | state       | zip    | phonenumber | email                   | restype | emptype |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+---------+
+| ABC       | def      | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | abc@gmail.com           | NULL    | NULL    |
+| datta     | bhure    | wakad   | pune   | maharashtra | 411033 | 98801654121 | dattatribhure@gmail.com | NULL    | NULL    |
+| Ram       | illale   | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | ramillalen@gmail.com    | NULL    | NULL    |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+---------+
+3 rows in set (0.00 sec)
+
+mysql> update addressbook set restype='temp', emptype='permanent';
+Query OK, 3 rows affected (0.14 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select * from addressbook;
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+-----------+
+| firstname | lastname | address | city   | state       | zip    | phonenumber | email                   | restype | emptype   |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+-----------+
+| ABC       | def      | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | abc@gmail.com           | temp    | permanent |
+| datta     | bhure    | wakad   | pune   | maharashtra | 411033 | 98801654121 | dattatribhure@gmail.com | temp    | permanent |
+| Ram       | illale   | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | ramillalen@gmail.com    | temp    | permanent |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> update addressbook set restype='permanent' where city='pune';
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update addressbook set restype='permanent' where city='pune';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> update addressbook set restype='permanent' where city='pune';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> update addressbook set restype='family', emytpe='friend';
+ERROR 1054 (42S22): Unknown column 'emytpe' in 'field list'
+mysql>
+mysql> alter table addressbook add name varchar(15);
+Query OK, 0 rows affected (0.85 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table addressbook add type varchar(15) default 'Family';
+Query OK, 0 rows affected (1.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update addressbook set restype='self' where firstname='datta' or lastname='def';
+Query OK, 2 rows affected (0.09 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> update addressbook set restype = 'family' where lastname = 'illale';
+Query OK, 1 row affected (0.15 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from addressbook;
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+-----------+------+--------+
+| firstname | lastname | address | city   | state       | zip    | phonenumber | email                   | restype | emptype   | name | type   |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+-----------+------+--------+
+| ABC       | def      | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | abc@gmail.com           | self    | permanent | NULL | Family |
+| datta     | bhure    | wakad   | pune   | maharashtra | 411033 | 98801654121 | dattatribhure@gmail.com | self    | permanent | NULL | Family |
+| Ram       | illale   | Bandra  | Mumbai | Maharashtra | 411000 | 9770112345  | ramillalen@gmail.com    | family  | permanent | NULL | Family |
++-----------+----------+---------+--------+-------------+--------+-------------+-------------------------+---------+-----------+------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select distinct city from addressbook;
++--------+
+| city   |
++--------+
+| Mumbai |
+| pune   |
++--------+
+2 rows in set (0.01 sec)
